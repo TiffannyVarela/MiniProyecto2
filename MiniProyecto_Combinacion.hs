@@ -1,9 +1,17 @@
+import System.Random
+
 main :: IO ()
 main = do
     putStr "--Adivina la combinación--\n1. Juego fácil\n2. Juego intermedio\n3. Juego difícil\nElige una opción para iniciar el juego: "
     opcion <- getLine 
     let x = (read opcion :: Int)
     print (validacionRango x)
+    putStr . show =<< randomRIO (0, 7 :: Int)
+    --primera opcion
+    --randomRIO (0, 7 :: Int):[]
+    --segyunda opcion
+    --let n = randomRIO (0, 7 :: Int)
+    --n:[]
 
 validacionRango :: Int -> Int
 validacionRango x = 
