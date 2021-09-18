@@ -3,12 +3,18 @@ import System.Random (randomRIO)
 
 main :: IO ()
 main = do
-    putStr "--Adivina la combinación--\n1. Juego fácil\n2. Juego intermedio\n3. Juego difícil\nElige una opción para iniciar el juego: "
+    putStrLn "--Adivina la combinación--\n1. Juego fácil\n2. Juego intermedio\n3. Juego difícil\nElige una opción para iniciar el juego: "
     opcion <- getLine 
     let opcionInt = (read opcion :: Int)
     let lengthArreglo = tamArreglo opcionInt
+    let numeroIntentos = numIntentos opcionInt
     ls <- randomList lengthArreglo
     print ls
+    usuario <- arregloUsuario lengthArreglo
+    print usuario
+    if igualLista ls usuario
+        then putStr "Si"
+        else putStr "No" 
     --print (validacionRango x)
     --putStr . show =<< randomRIO (0, 7 :: Int)
     --primera opcion
@@ -38,17 +44,19 @@ randomList n = do
     rs <- randomList (n-1)
     return (r:rs)
 
-randomList1 :: Int -> IO[Int]
-randomList1 0 = return []
-randomList1 n = do
-    r  <- randomRIO (0, numMax n)
-    rs <- randomList1 (n-1)
-    return (r:rs)
+arregloUsuario :: Int -> IO[Int]
+arregloUsuario 0 = return []
+arregloUsuario n = do
+    putStrLn "Ingrese un número: "
+    r  <- getLine
+    let opcionInt = (read r :: Int)
+    rs <- arregloUsuario (n-1)
+    return (opcionInt:rs)
 
 tamArreglo :: Int -> Int
-tamArreglo xs
-    | xs == 1 =  4
-    | xs == 2 =  5
+tamArreglo tam
+    | tam == 1 =  4
+    | tam == 2 =  5
     | otherwise =  6
 
 numMax :: Int -> Int
@@ -57,3 +65,12 @@ numMax tam
     | tam == 5 =  8
     | tam == 6 =  9
     | otherwise = 7
+
+numIntentos :: Int -> Int 
+numIntentos numIntentos
+    | numIntentos == 1 = 10
+    | numIntentos == 2 =  15
+    | otherwise =  20
+
+igualLista:: Eq a => [a]->[a]->Bool
+igualLista l1 l2 = l1 == l2
