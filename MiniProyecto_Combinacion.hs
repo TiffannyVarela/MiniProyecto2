@@ -10,13 +10,12 @@ main = do
     ls <- randomList lengthArreglo
     print ls
     usuario <- arregloUsuario lengthArreglo
-    
     let pos = 0
     let numeroPosicion = ls !! pos
     let condicion = evaluarLista pos numeroPosicion usuario
-    print condicion
     evaluacionRetroalimentacion condicion
 
+    retroalimentacion lengthArreglo (pos + 1) numeroPosicion usuario ls
 
     if igualLista ls usuario
         then putStrLn "Si"
@@ -98,7 +97,24 @@ evaluarLista pos numRan listaUsuario = do
 
 evaluacionRetroalimentacion :: Int -> IO()
 evaluacionRetroalimentacion condicion
-    | condicion == 1 = putStrLn "Es igual"
-    | condicion == 2 = putStrLn "Es igual pero en otro lado"
-    | condicion == 0 = putStrLn "No es igual"
+    | condicion == 1 = putStr "+"
+    | condicion == 2 = putStr "-"
+    | condicion == 0 = putStr "X"
     | otherwise = putStrLn "No agarro ningun numero"
+
+retroalimentacion :: Int -> Int -> Int -> [Int] -> [Int] -> IO()
+retroalimentacion tam pos numRan listaUsuario listaRandom = do
+    if pos >= tam then 
+        putStrLn ""
+    else do
+        let numeroPosicion = listaRandom !! pos
+        let condicion = evaluarLista pos numeroPosicion listaUsuario
+        evaluacionRetroalimentacion condicion
+        retroalimentacion tam (pos+1) numeroPosicion listaUsuario listaRandom
+
+{--retroalimentacion :: Int -> Int -> [Int] -> [Int] -> IO()
+--retroalimentacion 0 _ = return ()
+retroalimentacion n action =
+    do  
+        action
+        retroalimentacion (n-1) action--}
