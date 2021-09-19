@@ -1,4 +1,3 @@
---import System.Random
 import System.Random (randomRIO)
 
 main :: IO ()
@@ -11,18 +10,18 @@ main = do
     ls <- randomList lengthArreglo
     print ls
     usuario <- arregloUsuario lengthArreglo
-    print usuario
-    if igualLista ls usuario
-        then putStr "Si"
-        else putStr "No" 
-    --print (validacionRango x)
-    --putStr . show =<< randomRIO (0, 7 :: Int)
-    --primera opcion
-    --randomRIO (0, 7 :: Int):[]
-    --segyunda opcion
-    --let n = randomRIO (0, 7 :: Int)
-    --n:[]
+    
+    let pos = 0
+    let numeroPosicion = ls !! pos
+    let condicion = evaluarLista pos numeroPosicion usuario
+    print condicion
+    evaluacionRetroalimentacion condicion
 
+
+    if igualLista ls usuario
+        then putStrLn "Si"
+        else putStrLn "No"
+    
 {-validacionRango :: Int -> Int
 validacionRango x = 
     if (x >= 1 ) && (x <= 3) 
@@ -67,10 +66,39 @@ numMax tam
     | otherwise = 7
 
 numIntentos :: Int -> Int 
-numIntentos numIntentos
-    | numIntentos == 1 = 10
-    | numIntentos == 2 =  15
+numIntentos numeroIntentos
+    | numeroIntentos == 1 = 10
+    | numeroIntentos == 2 =  15
     | otherwise =  20
 
 igualLista:: Eq a => [a]->[a]->Bool
 igualLista l1 l2 = l1 == l2
+
+{--evaluarLista :: Int -> Int -> Int ->  IO[Int] ->  IO[Char]
+evaluarLista n pos numRan listaUsuario = do
+    if n == 0 then
+        return listaRetroalimentacion
+    else if numRan == listaUsuario !! pos then do
+        listaRetroalimentacion <- '+'
+        lift exit
+    else if numRan == listaRan !! pos then do
+        listaRetroalimentacion <- '-'
+        lift exit
+    else listaRetroalimentacion <- 'X'
+    n <- n +1
+    return evaluarLista (n-1) pos listaRan listaUsuario--}
+
+evaluarLista :: Int -> Int -> [Int] ->  Int
+evaluarLista pos numRan listaUsuario = do
+    if numRan `elem` listaUsuario then
+        if listaUsuario !! pos /= numRan then
+            2
+        else 1
+    else  0
+
+evaluacionRetroalimentacion :: Int -> IO()
+evaluacionRetroalimentacion condicion
+    | condicion == 1 = putStrLn "Es igual"
+    | condicion == 2 = putStrLn "Es igual pero en otro lado"
+    | condicion == 0 = putStrLn "No es igual"
+    | otherwise = putStrLn "No agarro ningun numero"
