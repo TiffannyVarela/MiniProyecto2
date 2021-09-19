@@ -8,18 +8,14 @@ main = do
     let lengthArreglo = tamArreglo opcionInt
     let numeroIntentos = numIntentos opcionInt
     ls <- randomList lengthArreglo
-    print ls
+    --print ls
     usuario <- arregloUsuario lengthArreglo
     let pos = 0
     let numeroPosicion = ls !! pos
-    let condicion = evaluarLista pos numeroPosicion usuario
-    evaluacionRetroalimentacion condicion
 
-    retroalimentacion lengthArreglo (pos + 1) numeroPosicion usuario ls
+    continuacion numeroIntentos lengthArreglo pos numeroPosicion usuario ls
 
-    if igualLista ls usuario
-        then putStrLn "Si"
-        else putStrLn "No"
+    
     
 {-validacionRango :: Int -> Int
 validacionRango x = 
@@ -73,20 +69,6 @@ numIntentos numeroIntentos
 igualLista:: Eq a => [a]->[a]->Bool
 igualLista l1 l2 = l1 == l2
 
-{--evaluarLista :: Int -> Int -> Int ->  IO[Int] ->  IO[Char]
-evaluarLista n pos numRan listaUsuario = do
-    if n == 0 then
-        return listaRetroalimentacion
-    else if numRan == listaUsuario !! pos then do
-        listaRetroalimentacion <- '+'
-        lift exit
-    else if numRan == listaRan !! pos then do
-        listaRetroalimentacion <- '-'
-        lift exit
-    else listaRetroalimentacion <- 'X'
-    n <- n +1
-    return evaluarLista (n-1) pos listaRan listaUsuario--}
-
 evaluarLista :: Int -> Int -> [Int] ->  Int
 evaluarLista pos numRan listaUsuario = do
     if numRan `elem` listaUsuario then
@@ -112,9 +94,17 @@ retroalimentacion tam pos numRan listaUsuario listaRandom = do
         evaluacionRetroalimentacion condicion
         retroalimentacion tam (pos+1) numeroPosicion listaUsuario listaRandom
 
-{--retroalimentacion :: Int -> Int -> [Int] -> [Int] -> IO()
---retroalimentacion 0 _ = return ()
-retroalimentacion n action =
-    do  
-        action
-        retroalimentacion (n-1) action--}
+continuacion :: Int -> Int -> Int -> Int -> [Int] -> [Int] -> IO()
+continuacion numeroIntentos tam pos numRan listaUsuario listaRandom = do
+    if igualLista listaRandom listaUsuario
+        then putStrLn "¡Felicidades has adivinado la contraseña!"
+        else do
+            if numeroIntentos == 0 then 
+                putStrLn ("Game over, la policía ha sido contactada run... inge son las 2:23 de la mañana AIUDA.\nLa combinación era:  "++ show listaRandom )
+            else do
+                retroalimentacion tam pos numRan listaUsuario listaRandom
+                putStrLn ("--Intenta de nuevo--\n Te quedan "++ show (numeroIntentos-1) ++ " intentos")
+                listaUsuario <- arregloUsuario tam 
+                continuacion (numeroIntentos - 1) tam pos numRan listaUsuario listaRandom
+
+
