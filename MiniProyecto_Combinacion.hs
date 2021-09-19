@@ -100,7 +100,7 @@ continuacion numeroIntentos tam pos numRan listaUsuario listaRandom = do
         then putStrLn "¡Felicidades has adivinado la contraseña!"
         else do
             if numeroIntentos == 0 then 
-                putStrLn ("Game over, la combinación no ha sido adivinada\nLa combinación era:  "++ show listaRandom )
+                putStrLn ("Game over, la policía ha sido contactada run... inge son las 2:23 de la mañana AIUDA.\nLa combinación era:  "++ show listaRandom)
             else do
                 retroalimentacion tam pos numRan listaUsuario listaRandom
                 putStrLn ("--Intenta de nuevo--\n Te quedan "++ show (numeroIntentos-1) ++ " intentos")
